@@ -17,6 +17,24 @@ func getPosts(c *gin.Context) {
 	c.JSON(http.StatusOK, posts)
 }
 
+func getPostsByUser(c *gin.Context) {
+	user := c.Param("user")
+
+	postsFromUser := filterPostsByUser(user)
+
+	c.JSON(http.StatusOK, postsFromUser)
+}
+
+func filterPostsByUser(user string) *[]Post {
+	postsFromUser := []Post{}
+	for _, p := range posts {
+		if p.User == user {
+			postsFromUser = append(postsFromUser, p)
+		}
+	}
+	return &postsFromUser
+}
+
 func addPost(c *gin.Context) {
 	var newPost Post
 	if err := c.ShouldBindJSON(&newPost); err != nil {
@@ -40,6 +58,7 @@ func main() {
 	}
 
 	r.GET("/posts", getPosts)
+	r.GET("/posts/:user", getPostsByUser)
 	r.POST("/posts", addPost)
 
 	r.Run()
