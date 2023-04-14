@@ -17,6 +17,18 @@ func getPosts(c *gin.Context) {
 	c.JSON(http.StatusOK, posts)
 }
 
+func addPost(c *gin.Context) {
+	var newPost Post
+	if err := c.ShouldBindJSON(&newPost); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	posts = append(posts, newPost)
+
+	c.JSON(http.StatusCreated, newPost)
+}
+
 func main() {
 	r := gin.Default()
 
@@ -28,5 +40,7 @@ func main() {
 	}
 
 	r.GET("/posts", getPosts)
+	r.POST("/posts", addPost)
+
 	r.Run()
 }
