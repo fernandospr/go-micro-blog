@@ -6,12 +6,27 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type Post struct {
+	User string
+	Text string
+}
+
+var posts []Post
+
+func getPosts(c *gin.Context) {
+	c.JSON(http.StatusOK, posts)
+}
+
 func main() {
 	r := gin.Default()
-	r.GET("/hello", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "Hello world!",
-		})
-	})
-	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+
+	posts = []Post{
+		{User: "user1", Text: "Hello World"},
+		{User: "user2", Text: "Hola Mundo"},
+		{User: "user1", Text: "Other message from user"},
+		{User: "user2", Text: "Hello World"},
+	}
+
+	r.GET("/posts", getPosts)
+	r.Run()
 }
