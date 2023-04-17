@@ -49,3 +49,12 @@ func FilterPostsByUser(user string) *[]Post {
 	}
 	return &postsFromUser
 }
+
+func FindPostById(id uint) *Post {
+	for _, p := range posts {
+		if p.ID == id {
+			return &p
+		}
+	}
+	return nil
+}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"go-micro-blog/models"
+	"strconv"
 
 	"net/http"
 
@@ -18,6 +19,22 @@ func getPostsByUser(c *gin.Context) {
 	postsFromUser := models.FilterPostsByUser(user)
 
 	c.JSON(http.StatusOK, postsFromUser)
+}
+
+func getPostsById(c *gin.Context) {
+	id := c.Param("id")
+
+	id64, err := strconv.ParseUint(id, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
+	} else {
+		post := models.FindPostById(uint(id64))
+		if post == nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
+		} else {
+			c.JSON(http.StatusOK, post)
+		}
+	}
 }
 
 func addPost(c *gin.Context) {
@@ -41,7 +58,8 @@ func main() {
 	r := gin.Default()
 
 	r.GET("/posts", getPosts)
-	r.GET("/posts/:user", getPostsByUser)
+	r.GET("/users/:user/posts", getPostsByUser)
+	r.GET("/posts/:id", getPostsById)
 	r.POST("/posts", addPost)
 
 	r.Run()
