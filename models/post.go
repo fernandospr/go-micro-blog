@@ -1,8 +1,8 @@
 package models
 
 type Post struct {
-	User string
-	Text string
+	User string `json:"user"`
+	Text string `json:"text"`
 }
 
 var posts []Post
