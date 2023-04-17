@@ -27,7 +27,10 @@ func addPost(c *gin.Context) {
 		return
 	}
 
-	models.AddPost(newPost)
+	if _, e := models.AddPost(&newPost); e != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": e.Error()})
+		return
+	}
 
 	c.JSON(http.StatusCreated, newPost)
 }

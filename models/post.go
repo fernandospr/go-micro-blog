@@ -1,6 +1,9 @@
 package models
 
+import "fmt"
+
 type Post struct {
+	ID   uint   `json:"id"`
 	User string `json:"user"`
 	Text string `json:"text"`
 }
@@ -13,15 +16,28 @@ func Posts() *[]Post {
 
 func Init() {
 	posts = []Post{
-		{User: "user1", Text: "Hello World"},
-		{User: "user2", Text: "Hola Mundo"},
-		{User: "user1", Text: "Other message from user"},
-		{User: "user2", Text: "Hello World"},
+		{ID: 1, User: "user1", Text: "Hello World"},
+		{ID: 2, User: "user2", Text: "Hola Mundo"},
+		{ID: 3, User: "user1", Text: "Other message from user"},
+		{ID: 4, User: "user2", Text: "Hello World"},
 	}
 }
 
-func AddPost(newPost Post) {
-	posts = append(posts, newPost)
+func AddPost(newPost *Post) (*Post, error) {
+	if postExists(newPost) {
+		return nil, fmt.Errorf("models: post with id %d already exists", newPost.ID)
+	}
+	posts = append(posts, *newPost)
+	return newPost, nil
+}
+
+func postExists(post *Post) bool {
+	for _, p := range posts {
+		if p.ID == post.ID {
+			return true
+		}
+	}
+	return false
 }
 
 func FilterPostsByUser(user string) *[]Post {
