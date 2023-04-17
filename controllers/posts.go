@@ -9,26 +9,30 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetPosts(c *gin.Context) {
-	c.JSON(http.StatusOK, models.Posts())
+type PostsController struct {
+	Repository models.PostsRepository
 }
 
-func GetPostsByUser(c *gin.Context) {
+func (pc *PostsController) GetPosts(c *gin.Context) {
+	c.JSON(http.StatusOK, pc.Repository.Posts())
+}
+
+func (pc *PostsController) GetPostsByUser(c *gin.Context) {
 	user := c.Param("user")
 
-	postsFromUser := models.FilterPostsByUser(user)
+	postsFromUser := pc.Repository.FilterPostsByUser(user)
 
 	c.JSON(http.StatusOK, postsFromUser)
 }
 
-func GetPostsById(c *gin.Context) {
+func (pc *PostsController) GetPostsById(c *gin.Context) {
 	id := c.Param("id")
 
 	id64, err := strconv.ParseUint(id, 10, 32)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 	} else {
-		post := models.FindPostById(uint(id64))
+		post := pc.Repository.FindPostById(uint(id64))
 		if post == nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 		} else {
@@ -37,14 +41,14 @@ func GetPostsById(c *gin.Context) {
 	}
 }
 
-func AddPost(c *gin.Context) {
+func (pc *PostsController) AddPost(c *gin.Context) {
 	var newPost models.Post
 	if err := c.ShouldBindJSON(&newPost); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if _, e := models.AddPost(&newPost); e != nil {
+	if _, e := pc.Repository.AddPost(&newPost); e != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": e.Error()})
 		return
 	}

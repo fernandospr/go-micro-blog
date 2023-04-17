@@ -8,14 +8,16 @@ import (
 )
 
 func main() {
-	models.Init()
-
 	r := gin.Default()
 
-	r.GET("/posts", controllers.GetPosts)
-	r.GET("/users/:user/posts", controllers.GetPostsByUser)
-	r.GET("/posts/:id", controllers.GetPostsById)
-	r.POST("/posts", controllers.AddPost)
+	repository := models.InMemoryPostsRepository{}
+	repository.Init()
+	c := controllers.PostsController{Repository: &repository}
+
+	r.GET("/posts", c.GetPosts)
+	r.GET("/users/:user/posts", c.GetPostsByUser)
+	r.GET("/posts/:id", c.GetPostsById)
+	r.POST("/posts", c.AddPost)
 
 	r.Run()
 }
