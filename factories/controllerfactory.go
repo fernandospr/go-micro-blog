@@ -6,6 +6,6 @@ import (
 )
 
 func NewPostsController(repository models.PostsRepository) controllers.PostsController {
-	controller := controllers.PostsController{Repository: repository}
-	return controller
+	controller := controllers.JsonPostsController{Repository: repository}
+	return &controller
 }
