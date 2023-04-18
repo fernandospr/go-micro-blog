@@ -7,22 +7,25 @@ import (
 
 func NewRepository(cfg config.Database) models.PostsRepository {
 	var repository models.PostsRepository
-	if cfg.Type == "in-memory" {
+
+	switch cfg.Type {
+	case "in-memory":
 		inmemoryrepo := models.InMemoryPostsRepository{}
 		inmemoryrepo.Init()
 		repository = &inmemoryrepo
-	} else if cfg.Type == "sqlite" {
+	case "sqlite":
 		dialector := models.SqliteDialector(cfg.Name)
-		sqliterepo := models.SqlPostsRepository{Dialector: dialector}
-		sqliterepo.Init()
+		sqliterepo := models.SqlPostsRepository{}
+		sqliterepo.Init(dialector)
 		repository = &sqliterepo
-	} else if cfg.Type == "mysql" {
+	case "mysql":
 		dialector := models.MySqlDialector(cfg.Username, cfg.Password, cfg.Host, cfg.Port, cfg.Name)
-		mysqlrepo := models.SqlPostsRepository{Dialector: dialector}
-		mysqlrepo.Init()
+		mysqlrepo := models.SqlPostsRepository{}
+		mysqlrepo.Init(dialector)
 		repository = &mysqlrepo
-	} else {
+	default:
 		panic("Database not supported")
 	}
+
 	return repository
 }

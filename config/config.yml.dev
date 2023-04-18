@@ -1,4 +1,4 @@
-# Rename this file to config.yml
+# Copy this file to config.yml
 database:
   # type: in-memory
   

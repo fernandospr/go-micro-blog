@@ -3,18 +3,15 @@ package models
 import (
 	"fmt"
 
-	"gorm.io/driver/mysql"
-	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
 type SqlPostsRepository struct {
-	db        *gorm.DB
-	Dialector gorm.Dialector
+	db *gorm.DB
 }
 
-func (repository *SqlPostsRepository) Init() {
-	database, err := gorm.Open(repository.Dialector, &gorm.Config{})
+func (repository *SqlPostsRepository) Init(dialector gorm.Dialector) {
+	database, err := gorm.Open(dialector, &gorm.Config{})
 
 	if err != nil {
 		panic("Failed to connect to database!")
@@ -54,13 +51,4 @@ func (repository *SqlPostsRepository) FindPostById(id uint) *Post {
 		return nil
 	}
 	return &post
-}
-
-func SqliteDialector(filename string) gorm.Dialector {
-	return sqlite.Open(filename)
-}
-
-func MySqlDialector(user string, password string, host string, port string, dbname string) gorm.Dialector {
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", user, password, host, port, dbname)
-	return mysql.Open(dsn)
 }
