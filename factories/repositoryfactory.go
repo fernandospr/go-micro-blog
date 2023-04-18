@@ -5,7 +5,7 @@ import (
 	"go-micro-blog/models"
 )
 
-func NewRepository(cfg config.Database) models.PostsRepository {
+func NewPostsRepository(cfg config.Database) models.PostsRepository {
 	var repository models.PostsRepository
 
 	switch cfg.Type {
