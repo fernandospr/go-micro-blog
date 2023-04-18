@@ -10,11 +10,11 @@ import (
 
 type SqlPostsRepository struct {
 	db        *gorm.DB
-	Dialector func() gorm.Dialector
+	Dialector gorm.Dialector
 }
 
 func (repository *SqlPostsRepository) Init() {
-	database, err := gorm.Open(repository.Dialector(), &gorm.Config{})
+	database, err := gorm.Open(repository.Dialector, &gorm.Config{})
 
 	if err != nil {
 		panic("Failed to connect to database!")
@@ -56,12 +56,11 @@ func (repository *SqlPostsRepository) FindPostById(id uint) *Post {
 	return &post
 }
 
-func SqliteDialector() gorm.Dialector {
-	dsn := "test.db"
-	return sqlite.Open(dsn)
+func SqliteDialector(filename string) gorm.Dialector {
+	return sqlite.Open(filename)
 }
 
-func MySqlDialector() gorm.Dialector {
-	dsn := "user:pass@tcp(127.0.0.1:3306)/dbname"
+func MySqlDialector(user string, password string, host string, port string, dbname string) gorm.Dialector {
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", user, password, host, port, dbname)
 	return mysql.Open(dsn)
 }

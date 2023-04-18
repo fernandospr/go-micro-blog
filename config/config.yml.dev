@@ -1,0 +1,16 @@
+# Rename this file to config.yml
+database:
+  # type: in-memory
+  
+  type: sqlite
+  db-name: test.db
+
+  # type: mysql
+  # host: localhost
+  # port: 6834
+  # username: user
+  # password: password
+  # db-name: foo
+
+server:
+  port: 8888
