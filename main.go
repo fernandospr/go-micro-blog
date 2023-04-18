@@ -10,7 +10,7 @@ import (
 func main() {
 	r := gin.Default()
 
-	repository := models.InMemoryPostsRepository{}
+	repository := models.SqlPostsRepository{}
 	repository.Init()
 	c := controllers.PostsController{Repository: &repository}
 
