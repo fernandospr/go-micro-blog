@@ -10,7 +10,7 @@ import (
 func main() {
 	r := gin.Default()
 
-	repository := models.SqlPostsRepository{}
+	repository := models.SqlPostsRepository{Dialector: models.SqliteDialector}
 	repository.Init()
 	c := controllers.PostsController{Repository: &repository}
 
