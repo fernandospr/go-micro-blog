@@ -11,7 +11,7 @@ func NewEngine(controller controllers.PostsController) *gin.Engine {
 
 	engine.GET("/posts", controller.GetPosts)
 	engine.GET("/users/:user/posts", controller.GetPostsByUser)
-	engine.GET("/posts/:id", controller.GetPostsById)
+	engine.GET("/posts/:id", controller.GetPostById)
 	engine.POST("/posts", controller.AddPost)
 
 	return engine

@@ -25,7 +25,7 @@ func (pc *JsonPostsController) GetPostsByUser(c *gin.Context) {
 	c.JSON(http.StatusOK, postsFromUser)
 }
 
-func (pc *JsonPostsController) GetPostsById(c *gin.Context) {
+func (pc *JsonPostsController) GetPostById(c *gin.Context) {
 	id := c.Param("id")
 
 	id64, err := strconv.ParseUint(id, 10, 32)
