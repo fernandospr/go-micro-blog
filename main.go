@@ -1,8 +1,6 @@
 package main
 
-import (
-	"go-micro-blog/factories"
-)
+import "go-micro-blog/factories"
 
 func main() {
 	cfg := factories.NewConfig("./config/config.yml")

@@ -1,12 +1,12 @@
 package controllers
 
 import (
-	"go-micro-blog/models"
+	"net/http"
 	"strconv"
 
-	"net/http"
-
 	"github.com/gin-gonic/gin"
+
+	"go-micro-blog/models"
 )
 
 type JsonPostsController struct {

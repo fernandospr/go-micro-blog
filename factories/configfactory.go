@@ -1,9 +1,9 @@
 package factories
 
 import (
-	"go-micro-blog/config"
-
 	"github.com/ilyakaznacheev/cleanenv"
+
+	"go-micro-blog/config"
 )
 
 func NewConfig(path string) config.Config {

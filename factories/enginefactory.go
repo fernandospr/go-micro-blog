@@ -1,9 +1,9 @@
 package factories
 
 import (
-	"go-micro-blog/controllers"
-
 	"github.com/gin-gonic/gin"
+
+	"go-micro-blog/controllers"
 )
 
 func NewEngine(controller controllers.PostsController) *gin.Engine {

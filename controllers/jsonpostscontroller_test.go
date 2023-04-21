@@ -1,17 +1,15 @@
 package controllers
 
 import (
-	"go-micro-blog/models"
-
 	"net/http"
 	"net/http/httptest"
-
-	"github.com/gin-gonic/gin"
-
 	"testing"
 
+	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+
+	"go-micro-blog/models"
 )
 
 type repositoryMock struct {
